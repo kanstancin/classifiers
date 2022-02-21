@@ -8,8 +8,8 @@ from glob import glob
 import numpy as np
 import cv2 as cv
 
-path_in = "/home/cstar/workspace/data/architecture_and_3d-printers"
-path_out = "/home/cstar/workspace/data/architecture_and_3d-printers_bw"
+path_in = "/home/ubuntu/workspace/create_train_set/data/rgb_images_spag_&_bckg"
+path_out = "/home/ubuntu/workspace/create_train_set/data/rgb_images_spag_&_bckg_bw"
 
 imgs_in = glob(os.path.join(path_in, "*"))
 for i, img_in in enumerate(imgs_in):
