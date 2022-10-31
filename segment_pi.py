@@ -169,6 +169,8 @@ model = load_model("seg_model/seg_only_sim.h5")
 test_input_img_paths = df_test.filename.to_list()
 # val_target_img_paths = df_test.mask_.astype(str).to_list()
 
+target_size = (90, 90)
+
 # Instantiate data Sequences for each split
 test_gen = OxfordPets2(1, img_size, target_size, test_input_img_paths, test_input_img_paths, 
                       augment=False)
