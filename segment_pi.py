@@ -8,6 +8,7 @@ from glob import glob
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+from tensorflow import keras
 
 
 def get_basename_no_ext(inp):
@@ -81,9 +82,10 @@ def append_images(img_path, req_size):
     return rows
     
     
-test_data = Data("/home/cstar/workspace/img/1.jpg",
+test_data = Data("/home/cstar/workspace/img/",
                 "1")
 rows = get_df(test_data.image, test_data.label)
+print(rows)
 df_test = pd.DataFrame(rows, columns=['filename', 'label', 'mask_'])
 df_test.label = df_test.label.astype("float").astype("int8")
 
@@ -94,7 +96,7 @@ num_classes = 2
 batch_size = 1
 
 
-import imgaug.augmenters as iaa
+#import imgaug.augmenters as iaa
 
 # process mask
 def resize_mask(mask, target_shape):
