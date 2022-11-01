@@ -112,6 +112,44 @@ def img_to_binary(mask):
     mask[mask>125] = 1
     return mask
 
+def img_to_binary(mask):
+    mask[mask<=125] = 0
+    mask[mask>125] = 1
+    return mask
+
+#from imgaug.augmentables.segmaps import SegmentationMapsOnImage
+
+
+
+def preprop_img(img, target_size):
+    shape = (target_size[1], target_size[0])
+    img = cv.resize(img, shape, interpolation=cv.INTER_AREA)
+    return img
+
+def preprop_mask(mask, target_size):
+    shape = (target_size[1], target_size[0])
+    mask = cv.resize(mask, shape, interpolation=cv.INTER_NEAREST)
+    mask = img_to_binary(mask)
+    return mask
+    
+def augment(img, mask, seq, shape):
+    mask = SegmentationMapsOnImage(mask, shape=shape)
+    img, mask = seq(image=img, segmentation_maps=mask)
+    return img, mask.get_arr()
+    
+def load_data(inp_path, target_path, shape=(1000, 1000)):
+    img = cv.imread(inp_path, cv.IMREAD_GRAYSCALE)
+    img = cv.resize(img, shape, interpolation=cv.INTER_AREA)
+    mask = cv.imread(target_path, cv.IMREAD_GRAYSCALE)
+    kernel = np.ones((15, 15), np.uint8)
+    mask =  cv.morphologyEx(mask, cv.MORPH_DILATE, kernel)
+    mask =  cv.morphologyEx(mask, cv.MORPH_CLOSE, kernel)
+    mask = cv.resize(mask, shape, interpolation=cv.INTER_NEAREST)
+    mask[mask<=30] = 0
+    mask[mask>30] = 255
+    # img, mask = augment(img, mask, seq, shape)
+    return img, mask
+    
 def load_img_cv(path, target_size, is_mask=False, augment=True):
     if not is_mask:
         img = cv.imread(path, cv.IMREAD_GRAYSCALE)
